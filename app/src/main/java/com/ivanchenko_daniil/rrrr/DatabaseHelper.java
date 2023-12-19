@@ -35,10 +35,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        if (oldVersion < 2) {
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN NEW_COL TEXT");
+            } catch (SQLException e) {
+
+            }
+        }
+
         onCreate(db);
     }
+
 
     public boolean insertURL(SQLiteDatabase db, String url) {
         ContentValues contentValues = new ContentValues();
